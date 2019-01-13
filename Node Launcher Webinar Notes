@@ -1,0 +1,203 @@
+Node Launcher Webinar Notes:
+
+Node launcher entry point is run.py
+
+Pyinstaller tool
+
+.spec files
+
+Allows you to run python application without installing python and dependencies
+
+Framework called Qt
+
+Qt is written in C++ and 3rd parties maintain wrapper around the framework.
+
+Allows you to use python to access all of the methods etc in C++
+
+You’ll see pyQT4, QT5, pySide
+
+Company behind Qt created PySide2
+
+Debugging in python w/ Qt 
+
+PyQT5
+
+Same underlying C++
+
+Flexibility to build desktop application using python
+
+If __name__ == “__main__”:
+
+Allows execution
+
+Main widget has a lot going on in it. Too much going on. Refactoring mught be a good project to start.
+
+Initializing the parent class
+
+Methods already built in are C++
+
+You can tell which are built in methods because they use CamelCase
+
+Different properties on these widgets
+
+Error messages should get cleaned up – opportunity!
+
+Need to trigger error messages and brainstorm ways of improving UX
+
+Network widget does a lot of the heavy lifting
+
+Data directory group box is rectangle at top
+
+Would like to see a menu that shows disk space usage
+
+Using Python OS module to understand partitions, capacity, read-write performance etc.
+
+Bitcoin Data directory has a number of sub-directories
+
+One is a block archive that has all the archives stored on disk and takes up 250Gb
+
+If we can get the UI to communicate to the end user the data directory…
+
+Mempool data, index data, block archive
+
+Large advantage with large amount of RAM
+
+DbCache sets how much RAM you are allowin BitcoinCore to use for UTXO set
+
+Max use is like 7Mb
+
+During initial block download huge performance advantage to set to 7Mb
+
+How much RAM to system, how much being used, cut 30% to be safe and set DbCache to that
+
+Artificial bottleneck created by having numerous brows tabs
+
+Communicate these bottlenecks to user and give options 
+
+Initial setup phase should prompt to ask what data-directory setup, RAM setup for performance
+
+At that point youll see the network widget with 2 tabs mainnet and testnet
+
+UI mockups would be good so you don’t have to hand code everything. Open a pull request with just a UI mockup if needed
+
+Network widget is going to contain all the other widgets
+
+Does it run on Linux – Yes Does it have a spec file – No
+
+Python run.py works 
+
+Packaging as a .deb file – someone can write instructions on this and sign using GPG key – something to work on
+
+Data-directory box has a select directory dialog, show directory opens the wondow
+
+If you select a directory on a small Hdd it will prune if it has to, prune warning label
+
+If you submit a pull request submit at least rudimentary unit tests with it..
+
+If you have questions about how to write tests ask..
+
+Show_director_button.clicked() is event
+
+Connect using a lambda function when passing in an arg
+
+Argument that gets passed in is the datat directory we want to reveal
+
+Show directory has another lambda function passes in current dtata directory
+
+In that class… 
+
+Change data directory function goes into the mainnet and testnet box
+
+Change name on mainnet_group_box
+
+When you see bitcoin.file and lnd.file and you see a dictionary..
+
+Next part is network widget
+
+Network widget is identical for both mainnet and testnet
+
+Something small to start with is to browse through issues and ask questions about issues
+
+Maybe show what you worked on even if it isn’t complete
+
+Network widget is where a lot gets coordinated.
+
+Concept of layouts and widgets in Qt
+
+Overarching layout is layout variable
+
+Ability to set alias
+
+Changes alias in realtime
+
+Select color is self explanatory
+
+Getting into lighnting stuff, the alias has no cryptographic authenticity etc.. don’t trust it; for entertainment purposes only. 
+
+Only unique identifier is the lighnting network pubkey
+
+Pubkey can be used to sign a message that says “this is my email address”
+
+Aliases can be spoofed easily
+
+Nodes layout is gonna have everything associated with bitcoin-qt launch bitcoin launch lnd
+
+Node_set is an important concept
+
+Like 2 peas in a pod 1 is bitcoin 1 is lnd node
+
+Need to be configured together b/c lnd relies on bitcoin
+
+NodeSet has an LND client and uses configuration from LND.cnf and uses bitcoin
+
+Could create a graph that shows mempool
+
+Property called network, network is just a string of mainnet 
+
+@property is_testnet is_mainnet 
+
+Lot of different moving parts in bitcoin
+
+When initialized config file is created if one does not already exist
+
+Prune directory is set to 7Gb of data. Only prunes if you don’t have the space
+
+Zmq interface notifies listeners everytime there is a transaction that is confirmed or there is a block in the form of bytes
+
+LND needs to know what zmq ports to listen to for notifications from bitcoin core
+
+get_zmq_port function writes to bitcoin config file
+
+check_process function checks to see if bitcoin is already running and the node launcher… literally checking to see if bitcoin process is running and analyzes to check the data to have lnd communicate with it but lnd is not running
+
+ Debug level would be cool if user could set that themselves
+
+Lnd has some utility properties like getting macaroon path
+
+Node launcher gets flagged by antivirus software – opportunity to improve
+
+Pip install lnd-client would be cool; create a separate lndclient library
+
+Lndwallet is now automatically unlocked
+
+Launch lnd passes in password for wallet
+
+Library called keyring used to store credentials in a secure manner
+
+Backup mnemonic seed in keyring
+
+Keyring can be queried to see if wallet has been unlocked, created, recovered, etc..
+
+
+Good first project:
+
+GitHub issues:
+
+Labels on milestones next is 5.4.0
+Mnemonic seed key printing is weird
+Lnd launcher permission denied #94
+Tag issues as good first issues
+Find what speaks to you as a user
+Look for points of friction
+What could be improved for you?
+If you bite off more than you can chew reach out
